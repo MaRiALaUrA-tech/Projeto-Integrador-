@@ -25,7 +25,7 @@ O sistema busca fornecer informações relevantes sobre as condições do solo, 
 
 - Arduino  
 - Impressora / Máquina 3D  
-- Java (Back-End)
+- Java, Spring Boot e Render (Back-End)
 - CSS, HTML e Java Script (Front-End)
 - Figma  
 - Inteligência Artificial
