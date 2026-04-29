@@ -24,6 +24,12 @@ O sistema busca fornecer informações relevantes sobre as condições do solo, 
 ## Documentação
 
   - Modelagem Conceitual:
+    <img width="1019" height="231" alt="Captura de tela 2026-04-29 112557" src="https://github.com/user-attachments/assets/96ebf00a-c12c-4e78-87f2-1b2ba6d83e4a" />
+
+  - Modelagem Lógica:
+    <img width="957" height="368" alt="Captura de tela 2026-04-29 112608" src="https://github.com/user-attachments/assets/95e714da-6675-4950-9737-6979257984a2" />
+
+
     
 
 ##  Tecnologias Utilizadas
