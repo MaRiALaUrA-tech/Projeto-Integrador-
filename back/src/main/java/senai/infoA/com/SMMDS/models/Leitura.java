@@ -29,9 +29,6 @@ public class Leitura{
     @Column(name="classificacao_dado")
     private String classificacaoDado;
 
-    
-    @Column(name="tipo_sensor")
-    private String tipoSensor;
 
     public Leitura(){
     }
@@ -43,7 +40,6 @@ public class Leitura{
         this.ultimaAtualizacao = ultimaAtualizacao;
         this.riscoDado = riscoDado;
         this.classificacaoDado = classificacaoDado;
-        this.tipoSensor = tipoSensor;
     }
 
     public Integer getLeituraId() {
@@ -86,13 +82,7 @@ public class Leitura{
         this.classificacaoDado = classificacaoDado;
     }
 
-    public String getTipoSensor() {
-        return tipoSensor;
-    }
-
-    public void setTipoSensor(String tipoSensor) {
-        this.tipoSensor = tipoSensor;
-    }
+    
 
     
 

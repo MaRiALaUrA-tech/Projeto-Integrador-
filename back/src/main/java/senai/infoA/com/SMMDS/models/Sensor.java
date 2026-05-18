@@ -22,6 +22,9 @@ public class Sensor{
     @Column(name ="sensor_id")
     private Integer sensorId;
 
+    @Column(name="tipo_sensor")
+    private String tipoSensor;
+
 
     @ManyToOne
     @JoinColumn(name = "local_id")
@@ -39,6 +42,7 @@ public class Sensor{
 
     public Sensor(Integer sensorId, Local local, List<Leitura> leitura) {
         this.sensorId = sensorId;
+        this.tipoSensor = tipoSensor;
         this.local = local;
         this.leitura = leitura;
     }
@@ -53,7 +57,13 @@ public class Sensor{
         this.sensorId = sensorId;
     }
 
+    public String getTipoSensor() {
+        return tipoSensor;
+    }
 
+    public void setTipoSensor(String tipoSensor) {
+        this.tipoSensor = tipoSensor;
+    }
     public Local getLocal() {
         return local;
     }

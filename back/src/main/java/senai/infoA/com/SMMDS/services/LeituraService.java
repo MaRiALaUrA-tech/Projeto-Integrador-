@@ -29,7 +29,7 @@ public class LeituraService {
         return leituraRepository.save(leitura);
     }
 
-    // Atualizar leitura
+    
     public Leitura atualizar(Integer id, Leitura leituraAtualizada) {
 
        Leitura leitura = buscarPorId(id);
@@ -39,10 +39,9 @@ public class LeituraService {
         leitura.setUltimaAtualizacao(leituraAtualizada.getUltimaAtualizacao());
         leitura.setRiscoDado(leituraAtualizada.getRiscoDado());
         leitura.setClassificacaoDado(leituraAtualizada.getClassificacaoDado());
-        leitura.setTipoSensor(leituraAtualizada.getTipoSensor());
 
         return leituraRepository.save(leitura);
-    }
+    } 
 
     // Deletar leitura
     public void deletar(Integer id) {
