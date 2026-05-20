@@ -30,8 +30,7 @@ public class Sensor{
     @JoinColumn(name = "local_id")
     private Local local;
 
-    @OneToMany
-    @JoinColumn(name = "leitura_id")
+    @OneToMany(mappedBy = "sensor")
     private List<Leitura> leitura;
 
 

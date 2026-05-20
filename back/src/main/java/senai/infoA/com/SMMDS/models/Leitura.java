@@ -1,12 +1,14 @@
 package senai.infoA.com.SMMDS.models;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,6 +30,10 @@ public class Leitura{
 
     @Column(name="classificacao_dado")
     private String classificacaoDado;
+
+    @ManyToOne
+    @JoinColumn(name = "sensor_id")
+    private Sensor sensor;
 
 
     public Leitura(){
@@ -81,6 +87,15 @@ public class Leitura{
     public void setClassificacaoDado(String classificacaoDado) {
         this.classificacaoDado = classificacaoDado;
     }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
+    
 
     
 

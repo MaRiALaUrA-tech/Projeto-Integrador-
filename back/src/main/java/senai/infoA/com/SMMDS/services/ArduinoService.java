@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.fazecast.jSerialComm.SerialPort;
 
 import senai.infoA.com.SMMDS.models.Leitura;
+import senai.infoA.com.SMMDS.models.Sensor;
 import senai.infoA.com.SMMDS.repositories.LeituraRepository;
 import senai.infoA.com.SMMDS.repositories.SensorRepository;
 
@@ -37,6 +38,7 @@ public class ArduinoService {
         }
     }
     private void processarLinha(String linha){
+        
         String[] partes = linha.split(";");
         for (String parte: partes){
             String[] chaveValor = parte.split(":");
@@ -52,13 +54,38 @@ public class ArduinoService {
     leitura.setDado(valor);
     leitura.setUltimaAtualizacao(new Timestamp(System.currentTimeMillis()));
     leitura.setClassificacaoDado(classificar(valor));
-    leitura.setRiscoDdao(calcularRisco(tipoSensor, valor));
+    leitura.setRiscoDado(calcularRisco(tipoSensor, valor));
     leituraRepository.save(leitura);
     System.out.println("Leitura salva:" + tipoSensor + "-->" + valor);
 
         }
     }
 
+    private String classificar (Double valor){
+        if (valor<40){
+            return "Baixo";
+        }
+        else if (valor<70){
+            return "Moderado";
+        }
+        return "Alto";
+    }
+
+    private String calcularRisco(String tipoSensor,Double valor){
+        if(tipoSensor.equals("UMID_SOLO")){
+            if(valor > 70){
+                return "Alto";
+            }
+            else if(valor > 40){
+                return "Moderado";
+            }
+            return "Baixo";
+        }
+        return "Sem risco";
+    }
+}
+
+
 
     
-}
+

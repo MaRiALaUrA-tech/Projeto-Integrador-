@@ -15,6 +15,6 @@ import io.swagger.v3.oas.annotations.info.Info;
         
 )
 )
-public class swagger {
+public class Swagger {
     
 }
