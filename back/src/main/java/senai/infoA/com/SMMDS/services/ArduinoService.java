@@ -30,6 +30,7 @@ public class ArduinoService {
         while(scanner.hasNextLine()){
             String linha = scanner.nextLine();
         processarLinha(linha);
+        scanner.close();
     }
     
     }
