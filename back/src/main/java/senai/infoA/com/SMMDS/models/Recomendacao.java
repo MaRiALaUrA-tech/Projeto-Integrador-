@@ -18,8 +18,8 @@ public class Recomendacao{
     @Column(name="recomendacao_id")
     private Integer recomendacaoId; 
 
-    @Column(name="texto_recomendativo")
-    private String textoRecomendativo;
+    @Column(name="texto_recomendacao")
+    private String textoRecomendacao;
 
     @ManyToOne
     @JoinColumn(name="leitura_id")
@@ -28,9 +28,9 @@ public class Recomendacao{
     public Recomendacao(){
     }
 
-    public Recomendacao(Integer recomendacaoId, String textoRecomendativo) {
+    public Recomendacao(Integer recomendacaoId, String textoRecomendacao) {
         this.recomendacaoId = recomendacaoId;
-        this.textoRecomendativo = textoRecomendativo;
+        this.textoRecomendacao = textoRecomendacao;
     }
 
     public Integer getRecomendacaoId() {
@@ -41,12 +41,12 @@ public class Recomendacao{
         this.recomendacaoId = recomendacaoId;
     }
 
-    public String getTextoRecomendativo() {
-        return textoRecomendativo;
+    public String getTextoRecomendacao() {
+        return textoRecomendacao;
     }
 
-    public void setTextoRecomendativo(String textoRecomendativo) {
-        this.textoRecomendativo = textoRecomendativo;
+    public void setTextoRecomendacao(String textoRecomendacao) {
+        this.textoRecomendacao = textoRecomendacao;
     }
 
     

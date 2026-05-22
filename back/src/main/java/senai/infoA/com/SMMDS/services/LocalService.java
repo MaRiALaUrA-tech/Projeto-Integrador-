@@ -36,7 +36,7 @@ public class LocalService {
 
         Local local = buscarPorId(id);
 
-        local.setNomeLocal(localAtualizado.getNomeLocal());
+        local.setNome(localAtualizado.getNome());
         local.setLatitude(localAtualizado.getLatitude());
         local.setLongitude(localAtualizado.getLongitude());
         local.setTipoSolo(localAtualizado.getTipoSolo());

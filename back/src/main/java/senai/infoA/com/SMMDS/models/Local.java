@@ -17,8 +17,8 @@ public class Local{
     @Column(name="local_id")
     private Integer localId;
 
-    @Column(name="nome_local")
-    private String nomeLocal;
+    @Column(name="nome")
+    private String nome;
 
     @Column(name="latitude")
     private BigDecimal latitude;
@@ -32,9 +32,9 @@ public class Local{
     public Local(){
     }
 
-    public Local(Integer localId, String nomeLocal, BigDecimal latitude, BigDecimal longitude, String tipoSolo) {
+    public Local(Integer localId, String nome, BigDecimal latitude, BigDecimal longitude, String tipoSolo) {
         this.localId = localId;
-        this.nomeLocal = nomeLocal;
+        this.nome = nome;
         this.latitude = latitude;
         this.longitude = longitude;
         this.tipoSolo = tipoSolo;
@@ -48,12 +48,12 @@ public class Local{
         this.localId = localId;
     }
 
-    public String getNomeLocal() {
-        return nomeLocal;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeLocal(String nomeLocal) {
-        this.nomeLocal = nomeLocal;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public BigDecimal getLatitude() {
