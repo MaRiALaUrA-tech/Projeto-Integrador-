@@ -1,5 +1,7 @@
 package senai.infoA.com.SMMDS.models;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,10 +21,10 @@ public class Local{
     private String nomeLocal;
 
     @Column(name="latitude")
-    private Double latitude;
+    private BigDecimal latitude;
 
     @Column(name="longitude")
-    private Double longitude;
+    private BigDecimal longitude;
 
     @Column(name="tipo_solo")
     private String tipoSolo;
@@ -30,7 +32,7 @@ public class Local{
     public Local(){
     }
 
-    public Local(Integer localId, String nomeLocal, Double latitude, Double longitude, String tipoSolo) {
+    public Local(Integer localId, String nomeLocal, BigDecimal latitude, BigDecimal longitude, String tipoSolo) {
         this.localId = localId;
         this.nomeLocal = nomeLocal;
         this.latitude = latitude;
@@ -54,19 +56,19 @@ public class Local{
         this.nomeLocal = nomeLocal;
     }
 
-    public Double getLatitude() {
+    public BigDecimal getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
     }
 
-    public Double getLongitude() {
+    public BigDecimal getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
     }
 

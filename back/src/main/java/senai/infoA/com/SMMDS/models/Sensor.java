@@ -39,7 +39,7 @@ public class Sensor{
     }
 
 
-    public Sensor(Integer sensorId, Local local, List<Leitura> leitura) {
+    public Sensor(Integer sensorId, String tipoSensor, Local local, List<Leitura> leitura) {
         this.sensorId = sensorId;
         this.tipoSensor = tipoSensor;
         this.local = local;
@@ -81,17 +81,5 @@ public class Sensor{
     public void setLeitura(List<Leitura> leitura) {
         this.leitura = leitura;
     }
-
-    
-
-
-
-
-
-
-
-    
-
-
 
 }
