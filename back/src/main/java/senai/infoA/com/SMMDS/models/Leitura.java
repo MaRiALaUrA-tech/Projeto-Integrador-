@@ -1,5 +1,6 @@
 package senai.infoA.com.SMMDS.models;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
@@ -20,7 +21,7 @@ public class Leitura{
     private Integer leituraId;
 
     @Column(name="dado")
-    private Double dado;
+    private BigDecimal dado;
 
     @Column(name="ultima_atualizacao")
     private Timestamp ultimaAtualizacao;
@@ -39,8 +40,7 @@ public class Leitura{
     public Leitura(){
     }
 
-    public Leitura(Integer leituraId, Double dado, Timestamp ultimaAtualizacao, String riscoDado,
-            String classificacaoDado, String tipoSensor) {
+    public Leitura(Integer leituraId, BigDecimal dado, Timestamp ultimaAtualizacao, String riscoDado, String classificacaoDado, String tipoSensor) {
         this.leituraId = leituraId;
         this.dado = dado;
         this.ultimaAtualizacao = ultimaAtualizacao;
@@ -56,11 +56,11 @@ public class Leitura{
         this.leituraId = leituraId;
     }
 
-    public Double getDado() {
+    public BigDecimal getDado() {
         return dado;
     }
 
-    public void setDado(Double dado) {
+    public void setDado(BigDecimal dado) {
         this.dado = dado;
     }
 

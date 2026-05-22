@@ -1,5 +1,6 @@
 package senai.infoA.com.SMMDS.services;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Scanner;
 
@@ -44,7 +45,7 @@ public class ArduinoService {
         for (String parte: partes){
             String[] chaveValor = parte.split(":");
             String tipoSensor = chaveValor[0];
-            Double valor = Double.parseDouble(chaveValor[1]);
+            BigDecimal valor = new BigDecimal(chaveValor[1]);
     Sensor sensor = sensorRepository.findByTipoSensor(tipoSensor).orElse(null);
     if (sensor == null){
         System.out.println("Sensor não encontrado:" + tipoSensor);
@@ -62,28 +63,31 @@ public class ArduinoService {
         }
     }
 
-    private String classificar (Double valor){
-        if (valor<40){
-            return "Baixo";
+    private String classificar (BigDecimal valor){
+        if (valor.compareTo(new BigDecimal("40")) < 0){
+        return "Baixo";
+    }
+    // Substitui: else if (valor < 70)
+    else if (valor.compareTo(new BigDecimal("70")) < 0){
+        return "Moderado";
+    }
+    return "Alto";
+}
+
+    private String calcularRisco(String tipoSensor,BigDecimal valor){
+        if(tipoSensor.equals("UMID_SOLO")){
+        // Substitui: if (valor > 70)
+        if(valor.compareTo(new BigDecimal("70")) > 0){
+            return "Alto";
         }
-        else if (valor<70){
+        // Substitui: else if (valor > 40)
+        else if(valor.compareTo(new BigDecimal("40")) > 0){
             return "Moderado";
         }
-        return "Alto";
+        return "Baixo";
     }
-
-    private String calcularRisco(String tipoSensor,Double valor){
-        if(tipoSensor.equals("UMID_SOLO")){
-            if(valor > 70){
-                return "Alto";
-            }
-            else if(valor > 40){
-                return "Moderado";
-            }
-            return "Baixo";
-        }
-        return "Sem risco";
-    }
+    return "Sem risco";
+}
 }
 
 
