@@ -11,7 +11,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 ENV MAVEN_HOME=/opt/maven
 ENV PATH=$MAVEN_HOME/bin:$PATH
-COPY pom.xml .
+COPY ./back/pom.xml .
 RUN mvn dependency:go-offline -B || true
 COPY ./back/src ./src
 RUN mvn clean package -DskipTests
