@@ -1,7 +1,5 @@
 package senai.infoA.com.SMMDS.models;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 // fk_local e fk_tipo_sensor
@@ -30,20 +27,16 @@ public class Sensor{
     @JoinColumn(name = "local_id")
     private Local local;
 
-    @OneToMany(mappedBy = "sensor")
-    private List<Leitura> leitura;
-
 
     public Sensor(){
 
     }
 
 
-    public Sensor(Integer sensorId, String tipoSensor, Local local, List<Leitura> leitura) {
+    public Sensor(Integer sensorId, String tipoSensor, Local local) {
         this.sensorId = sensorId;
         this.tipoSensor = tipoSensor;
         this.local = local;
-        this.leitura = leitura;
     }
 
 
@@ -70,16 +63,6 @@ public class Sensor{
 
     public void setLocal(Local local) {
         this.local = local;
-    }
-
-
-    public List<Leitura> getLeitura() {
-        return leitura;
-    }
-
-
-    public void setLeitura(List<Leitura> leitura) {
-        this.leitura = leitura;
     }
 
 }
