@@ -32,6 +32,9 @@ public class Leitura{
     @Column(name="classificacao_dado")
     private String classificacaoDado;
 
+    @Column(name="recomendacao_agricola")
+    private String recomendacaoAgricola;
+
     @ManyToOne
     @JoinColumn(name = "sensor_id")
     private Sensor sensor;
@@ -40,12 +43,13 @@ public class Leitura{
     public Leitura(){
     }
 
-    public Leitura(Integer leituraId, BigDecimal dado, Timestamp ultimaAtualizacao, String riscoDado, String classificacaoDado, String tipoSensor) {
+    public Leitura(Integer leituraId, BigDecimal dado, Timestamp ultimaAtualizacao, String riscoDado, String classificacaoDado, String tipoSensor, String recomendacaoAgricola) {
         this.leituraId = leituraId;
         this.dado = dado;
         this.ultimaAtualizacao = ultimaAtualizacao;
         this.riscoDado = riscoDado;
         this.classificacaoDado = classificacaoDado;
+        this.recomendacaoAgricola = recomendacaoAgricola;
     }
 
     public Integer getLeituraId() {
@@ -95,6 +99,15 @@ public class Leitura{
     public void setSensor(Sensor sensor) {
         this.sensor = sensor;
     }
+
+    public String getRecomendacaoAgricola() {
+        return recomendacaoAgricola;
+    }
+
+    public void setRecomendacaoAgricola(String recomendacaoAgricola) {
+        this.recomendacaoAgricola = recomendacaoAgricola;
+    }
+    
     
 
     
