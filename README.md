@@ -39,6 +39,6 @@ O sistema busca fornecer informações relevantes sobre as condições do solo, 
 
 - Arduíno   
 - Java, Spring Boot e Render (Back-End)
-- CSS, HTML e Java Script (Front-End)
+- Flutter (Front-End)
 - Figma  
 - Inteligência Artificial (Groq)
