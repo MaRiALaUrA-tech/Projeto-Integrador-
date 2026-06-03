@@ -6,9 +6,15 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class GroqService {
@@ -17,65 +23,73 @@ public class GroqService {
     @Value("${spring.ai.openai.api-key}")
     private String apiKey;
 
-    private final String URL_GROQ = "https://api.groq.com/openai";
+    private final String URL_GROQ = "https://api.groq.com/openai/v1/chat/completions"; // Link para acessar o servidor do Groq
+    private final ObjectMapper om = new ObjectMapper();  // Chama o Json
 
-    public String pedirRecomendacaoAgricola(String tipoSensor, BigDecimal dadoLeitura, String tipoSolo) {
+    public String pedirRecomendacaoAgricola(String tipoSensor, BigDecimal dado, String tipoSolo) {
         try {
             // 1. Criamos o "cliente" que vai navegar na internet
             HttpClient cliente = HttpClient.newHttpClient();
 
-            // 2. Definimos a "personalidade" da IA (Prompt do Sistema)
-            String instrucaoIA = "Você é um engenheiro agrônomo especialista. "
-                               + "Forneça uma recomendação curta, prática e direta (máximo de 15 palavras) "
-                               + "de manejo ou irrigação baseado no sensor.";
+           
+            String instrucaoIA = "Você é um engenheiro agrônomo e consultor de sustentabilidade especialista. "
+                               + "Forneça uma recomendação curta, prática e direta (máximo de 50 palavras) "
+                               + "de manejo ou irrigação baseado no sensor."
+                               + "Considere o tipo de solo para dar uma resposta mais precisa."
+                               + "Traga dicas de sustentabilidade de acordo com os dados recebidos";
 
-            // 3. Montamos a pergunta com os dados reais do seu Arduino
-            String perguntaUsuario = "O sensor " + tipoSensor + " marcou o valor " + dadoLeitura + "nesse tipo de solo" + tipoSolo + ". O que o agricultor deve fazer?";
+            // Montamos a pergunta com os dados reais do seu Arduino
+            String perguntaUsuario = "O sensor " + tipoSensor + " marcou o valor " + dado + " no tipo de solo " + tipoSolo + ". O que o agricultor deve fazer?";
 
-            // 4. Montamos o texto no formato JSON que o Groq exige
-            String corpoJson = "{"
-                    + "\"model\": \"llama3-8b-8192\","
-                    + "\"messages\": ["
-                    + "  {\"role\": \"system\", \"content\": \"" + instrucaoIA + "\"},"
-                    + "  {\"role\": \"user\", \"content\": \"" + perguntaUsuario + "\"}"
-                    + "]"
-                    + "}";
+            // Montando o formato da mensagem
+            Map<String, Object> payload = Map.of(        // Formato que o Groq usa. É um mapa.
+                "model", "llama3-8b-8192", "messages", List.of(
+                    Map.of("role","system","content", instrucaoIA),
+                    Map.of("role","user","content", perguntaUsuario)
+                )
+            );
+            String corpoJson = om.writeValueAsString(payload); // Transforma o mapa em texto Json
 
-            // 5. Preparamos a viagem dos dados colocando a sua chave de segurança no cabeçalho (Header)
+            //  Preparamos a viagem dos dados colocando a sua chave de segurança (chave de API) no header
             HttpRequest requisicao = HttpRequest.newBuilder()
                     .uri(URI.create(URL_GROQ))
+                    .timeout(Duration.ofSeconds(20)) // Tempo para a IA responder 
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + apiKey)
-                    .POST(HttpRequest.BodyPublishers.ofString(corpoJson, StandardCharsets.UTF_8))
+                    .POST(HttpRequest.BodyPublishers.ofString(corpoJson, StandardCharsets.UTF_8)) //Envia os dados e traz o Json com caracteres como acentos
                     .build();
 
-            // 6. Fazemos a ligação web e aguardamos o Groq responder
+            // 6Fazemos a ligação web e aguardamos o Groq responder
             HttpResponse<String> resposta = cliente.send(requisicao, HttpResponse.BodyHandlers.ofString());
 
-            // Se o servidor do Groq responder com sucesso (Status 200)
-            if (resposta.statusCode() == 200) {
-                return extrairTextoDaResposta(resposta.body());
-            } else {
-                return "Aviso: IA não está funcionando.";
+        
+            int status = resposta.statusCode();
+            if (status >= 200 && status < 300) {
+                return extrairTextoDaResposta(resposta.body()); //Status na faixa dos 200: chama o método de resposta
+            } else if (status == 401 || status == 403) {  // Status que indicam que a API não foi autenticada
+                return "A IA não foi autenticada.";
+            } else {                                      //Qualquer outro status
+                return "IA respondeu com o status" + status + ".";
             }
 
         } catch (Exception e) {
-            return "Erro ao conectar com a IA: " + e.getMessage();
+            return "Erro ao conectar com a IA: " + e.getMessage();  // Por exemplo, se a internet cair, mostra o erro e motivo do problema
         }
     }
 
     // Método auxiliar para recortar o JSON e pegar apenas a frase de resposta da IA
     private String extrairTextoDaResposta(String jsonResposta) {
         try {
-            int indexContent = jsonResposta.indexOf("\"content\":\"");
-            if (indexContent != -1) {
-                int inicio = indexContent + 11;
-                int fim = jsonResposta.indexOf("\"", inicio);
-                return jsonResposta.substring(inicio, fim)
-                        .replace("\\n", " ")
-                        .replace("\\\"", "\"");
+           JsonNode root = om.readTree(jsonResposta);   //Pega a árvore de nós da resposta e coloca em Json
+           JsonNode choices = root.path("choices");  // "Choices" é onde fica guardado as opções de respostas das IAs (OpenIA)
+           if (choices.isArray() && choices.size()>0){  // Verifica se a resposta tem um valor
+               JsonNode content = choices.get(0).path("message").path("content"); // Se sim, percorre um caminho até chegar no content (onde a resposta fica)
+               if (!content.isMissingNode()) return content.asText().replace("\n", " ").trim(); // Transforma em texto e o deixa corrido
             }
-        } catch (Exception e) {}
-        return "Leitura registrada.";
+            JsonNode anyContent = root.findValue("content");
+            if (anyContent != null) return anyContent.asText().replace("\n", " ").trim(); //Se der algum erro, ele começa a buscar qualquer campo content
+        } catch (Exception e) {
+        }
+        return "Leitura registrada."; //Não conseguiu capturar, só diz que teve uma leitura registrada mas não mostra a reposta
     }
 }
