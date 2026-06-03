@@ -37,8 +37,7 @@ O sistema busca fornecer informações relevantes sobre as condições do solo, 
 
 ##  Tecnologias Utilizadas
 
-- Arduíno   
-- Java, Spring Boot e Render (Back-End)
-- Flutter (Front-End)
-- Figma  
+- Arduíno e C++ 
+- Java, Spring Boot, Postgres e Render (Back-End)
+- Flutter e Figma (Front-End) 
 - Inteligência Artificial (Groq)
