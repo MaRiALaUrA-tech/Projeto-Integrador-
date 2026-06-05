@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,24 +33,25 @@ public class Leitura{
     @Column(name="classificacao_dado")
     private String classificacaoDado;
 
-    @Column(name="recomendacao_agricola")
-    private String recomendacaoAgricola;
-
     @ManyToOne
     @JoinColumn(name = "sensor_id")
     private Sensor sensor;
+
+    @OneToOne
+    @JoinColumn(name="recomendacao_id", referencedColumnName = "recomendacao_id")
+    private Recomendacao recomendacao;
 
 
     public Leitura(){
     }
 
-    public Leitura(Integer leituraId, BigDecimal dado, Timestamp ultimaAtualizacao, String riscoDado, String classificacaoDado, String tipoSensor, String recomendacaoAgricola) {
+    public Leitura(Integer leituraId, BigDecimal dado, Timestamp ultimaAtualizacao, String riscoDado, String classificacaoDado, String tipoSensor, Recomendacao recomendacao) {
         this.leituraId = leituraId;
         this.dado = dado;
         this.ultimaAtualizacao = ultimaAtualizacao;
         this.riscoDado = riscoDado;
         this.classificacaoDado = classificacaoDado;
-        this.recomendacaoAgricola = recomendacaoAgricola;
+        this.recomendacao = recomendacao;
     }
 
     public Integer getLeituraId() {
@@ -100,14 +102,15 @@ public class Leitura{
         this.sensor = sensor;
     }
 
-    public String getRecomendacaoAgricola() {
-        return recomendacaoAgricola;
+    public Recomendacao getRecomendacao() {
+        return recomendacao;
     }
 
-    public void setRecomendacaoAgricola(String recomendacaoAgricola) {
-        this.recomendacaoAgricola = recomendacaoAgricola;
+    public void setRecomendacao(Recomendacao recomendacao) {
+        this.recomendacao = recomendacao;
     }
     
+
     
 
     
