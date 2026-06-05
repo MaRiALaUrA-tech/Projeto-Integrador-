@@ -10,7 +10,9 @@ import com.fazecast.jSerialComm.SerialPort;
 
 import senai.infoA.com.SMMDS.models.Leitura;
 import senai.infoA.com.SMMDS.models.Sensor;
+import senai.infoA.com.SMMDS.models.Recomendacao;
 import senai.infoA.com.SMMDS.repositories.LeituraRepository;
+import senai.infoA.com.SMMDS.repositories.RecomendacaoRepository;
 import senai.infoA.com.SMMDS.repositories.SensorRepository;
 
 
@@ -18,11 +20,16 @@ import senai.infoA.com.SMMDS.repositories.SensorRepository;
 public class ArduinoService {
     private final SensorRepository sensorRepository;
     private final LeituraRepository leituraRepository;
+    private final RecomendacaoRepository recomendacaoRepository;
+    private final GroqService groqService;
 
-    public ArduinoService(SensorRepository sensorRepository, LeituraRepository leituraRepository, GroqService groqService) {
+    public ArduinoService(SensorRepository sensorRepository, LeituraRepository leituraRepository, RecomendacaoRepository recomendacaoRepository, GroqService groqService) {
         this.sensorRepository = sensorRepository;
         this.leituraRepository = leituraRepository;
+        this.recomendacaoRepository = recomendacaoRepository;
+        this.groqService = groqService;
     }
+
     public void iniciarLeitura(){
         SerialPort porta= SerialPort.getCommPort("/dev/ttyUSB0");
         porta.setBaudRate(9600);
@@ -55,6 +62,7 @@ public class ArduinoService {
         System.out.println("Sensor não encontrado:" + tipoSensor);
         continue;
     }
+        
 
     Leitura leitura = new Leitura();
     leitura.setSensor(sensor);
@@ -62,13 +70,18 @@ public class ArduinoService {
     leitura.setUltimaAtualizacao(new Timestamp(System.currentTimeMillis()));
     leitura.setClassificacaoDado(classificar(dado));
     leitura.setRiscoDado(calcularRisco(tipoSensor, dado));
- 
-    leituraRepository.save(leitura);
-    System.out.println("Leitura salva: " + tipoSensor + " --> " + dado);
-
-        }
+   
+    String tipoSolo; if (sensor.getLocal() != null) { tipoSolo = sensor.getLocal().getTipoSolo();} else {tipoSolo= "Não especificado";} //Tem um local associado a esse sensor? Se sim, porcure o tipo de solo. Se não, o tipo não foi especificado.
+    String textoGerado = groqService.pedirRecomendacaoAgricola(tipoSensor, dado, tipoSolo);
+   Recomendacao recomendacao = new Recomendacao();
+        recomendacao.setTextoRecomendacao(textoGerado);
+    Recomendacao recomendacaoSalva = recomendacaoRepository.save(recomendacao);
+            leitura.setRecomendacao(recomendacaoSalva);
+            leituraRepository.save(leitura);
+            System.out.println("Leitura salva no banco com a recomendação da IA!");
     }
-
+    }
+        
     private String classificar (BigDecimal dado){
         if (dado.compareTo(new BigDecimal("40")) < 0){
         return "Baixo";

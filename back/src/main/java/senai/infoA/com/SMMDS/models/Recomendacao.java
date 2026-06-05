@@ -21,9 +21,6 @@ public class Recomendacao{
     @Column(name="texto_recomendacao")
     private String textoRecomendacao;
 
-    @ManyToOne
-    @JoinColumn(name="leitura_id")
-    private Leitura leitura;
 
     public Recomendacao(){
     }
