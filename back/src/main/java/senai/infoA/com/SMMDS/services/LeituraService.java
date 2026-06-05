@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import senai.infoA.com.SMMDS.models.Leitura;
+import senai.infoA.com.SMMDS.models.Local;
+import senai.infoA.com.SMMDS.models.Sensor;
 import senai.infoA.com.SMMDS.repositories.LeituraRepository;
 
 @Service
@@ -26,6 +28,8 @@ public class LeituraService {
 
     // Salvar leitura
     public Leitura salvar(Leitura leitura) {
+        Sensor sensorLeitura = sensorLeitura.buscarPorId(leitura.getSensor().getSensorId());
+        leitura.setSensor(sensorLeitura);
         return leituraRepository.save(leitura);
     }
 

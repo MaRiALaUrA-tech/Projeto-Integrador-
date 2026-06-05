@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import senai.infoA.com.SMMDS.models.Local;
 import senai.infoA.com.SMMDS.models.Sensor;
 import senai.infoA.com.SMMDS.repositories.SensorRepository;
 
@@ -14,6 +15,9 @@ public class SensorService {
 
     @Autowired
     private SensorRepository sensorRepository;
+
+    @Autowired
+    private LocalService localService;
 
     // Listar todos
     public List<Sensor> listarTodos() {
@@ -27,6 +31,8 @@ public class SensorService {
 
     // Salvar
     public Sensor salvar(Sensor sensor) {
+        Local localSensor = localService.buscarPorId(sensor.getLocal().getLocalId());
+        sensor.setLocal(localSensor);
         return sensorRepository.save(sensor);
     }
 

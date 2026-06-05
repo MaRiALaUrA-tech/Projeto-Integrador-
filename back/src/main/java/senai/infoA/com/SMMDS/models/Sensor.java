@@ -64,8 +64,5 @@ public class Sensor{
     public void setLocal(Local local) {
         this.local = local;
     }
-    public String getTipoSolo() {
-        return this.local != null ? this.local.getTipoSolo() : null;
-    }
 
 }
