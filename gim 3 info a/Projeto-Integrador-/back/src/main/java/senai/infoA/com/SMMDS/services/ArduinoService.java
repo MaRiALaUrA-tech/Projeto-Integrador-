@@ -49,7 +49,9 @@ public class ArduinoService {
     else {
         System.out.println("Erro ao conectar USB");
         }
-    }
+    }catch (Exception e) {
+    System.out.println("[AVISO] Ambiente sem Sensor). Continuando execução em modo de simulação...");}
+}
     private void processarLinha(String linha){
         
         String[] partes = linha.split(";");
