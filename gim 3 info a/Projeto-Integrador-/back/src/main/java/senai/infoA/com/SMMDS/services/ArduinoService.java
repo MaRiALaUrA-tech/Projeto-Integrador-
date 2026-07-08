@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.fazecast.jSerialComm.SerialPort;
 
 import senai.infoA.com.SMMDS.models.Leitura;
-import senai.infoA.com.SMMDS.models.Sensor;
 import senai.infoA.com.SMMDS.models.Recomendacao;
+import senai.infoA.com.SMMDS.models.Sensor;
 import senai.infoA.com.SMMDS.repositories.LeituraRepository;
 import senai.infoA.com.SMMDS.repositories.RecomendacaoRepository;
 import senai.infoA.com.SMMDS.repositories.SensorRepository;
@@ -49,8 +49,7 @@ public class ArduinoService {
     else {
         System.out.println("Erro ao conectar USB");
         }
-    }catch (Exception e) {
-    System.out.println("[AVISO] Ambiente sem Sensor). Continuando execução em modo de simulação...");}
+
 }
     private void processarLinha(String linha){
         
@@ -110,6 +109,7 @@ public class ArduinoService {
     return "Sem risco";
 }
 }
+
 
 
 
