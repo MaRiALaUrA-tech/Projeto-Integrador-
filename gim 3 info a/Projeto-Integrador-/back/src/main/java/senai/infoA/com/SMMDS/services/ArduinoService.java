@@ -31,6 +31,7 @@ public class ArduinoService {
     }
 
     public void iniciarLeitura(){
+        try {
         SerialPort porta= SerialPort.getCommPort("/dev/ttyUSB0");
         porta.setBaudRate(9600);
     if (porta.openPort()){
@@ -49,6 +50,9 @@ public class ArduinoService {
     else {
         System.out.println("Erro ao conectar USB");
         }
+    }catch (Exception e){
+        System.out.println("Porta serial não encontrada. Ignorando leitura do Arduino para este ambiente.");
+    }
 
 }
     private void processarLinha(String linha){
