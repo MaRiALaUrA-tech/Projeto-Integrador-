@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.fazecast.jSerialComm.SerialPort;
 
 import senai.infoA.com.SMMDS.models.Leitura;
-import senai.infoA.com.SMMDS.models.Recomendacao;
 import senai.infoA.com.SMMDS.models.Sensor;
+import senai.infoA.com.SMMDS.models.Recomendacao;
 import senai.infoA.com.SMMDS.repositories.LeituraRepository;
 import senai.infoA.com.SMMDS.repositories.RecomendacaoRepository;
 import senai.infoA.com.SMMDS.repositories.SensorRepository;
@@ -31,7 +31,6 @@ public class ArduinoService {
     }
 
     public void iniciarLeitura(){
-        try {
         SerialPort porta= SerialPort.getCommPort("/dev/ttyUSB0");
         porta.setBaudRate(9600);
     if (porta.openPort()){
@@ -50,18 +49,43 @@ public class ArduinoService {
     else {
         System.out.println("Erro ao conectar USB");
         }
-    }catch (Exception e){
-        System.out.println("Porta serial não encontrada. Ignorando leitura do Arduino para este ambiente.");
     }
-
-}
     private void processarLinha(String linha){
         
-        String[] partes = linha.split(";");
-        for (String parte: partes){
-            String[] chaveDado = parte.split(":");
-            String tipoSensor = chaveDado[0];
-            BigDecimal dado = new BigDecimal(chaveDado[1]);
+        if (linha == null || linha.trim().isEmpty()) {
+        return;
+    }
+
+    String[] partes = linha.split(";");
+    for (String parte : partes) {
+        
+        // CORREÇÃO: Se o pedaço da linha não contiver ":", ignora (vai salvar sua 4ª parte vazia)
+        if (!parte.contains(":")) {
+            continue; 
+        }
+
+        String[] chaveDado = parte.split(":");
+        
+        // CORREÇÃO: Garante que temos a chave E o dado antes de continuar
+        if (chaveDado.length < 2) {
+            continue;
+        }
+
+        String tipoSensor = chaveDado[0].replace("\0", "").trim();
+        // 1. Pegamos o texto bruto do valor (ex: "45.2")
+        String valorBruto = chaveDado[1];
+
+        // 2. Remove TUDO o que não for número ou ponto (limpa o \r, \n, espaços, etc.)
+        String valorLimpo = valorBruto.replaceAll("[^0-9.]", "");
+
+        // 3. Validação: se ficou vazio ou se veio com mais de um ponto por erro de ruído, ignora
+        if (valorLimpo.isEmpty() || valorLimpo.indexOf('.') != valorLimpo.lastIndexOf('.')) {
+            System.out.println("Ignorando valor numérico inválido: [" + valorBruto.trim() + "]");
+            continue; 
+        }
+
+        // 4. Agora sim, transformamos em BigDecimal com total segurança!
+        BigDecimal dado = new BigDecimal(valorLimpo);
     Sensor sensor = sensorRepository.findByTipoSensor(tipoSensor).orElse(null);
     if (sensor == null){
         System.out.println("Sensor não encontrado:" + tipoSensor);
@@ -113,7 +137,6 @@ public class ArduinoService {
     return "Sem risco";
 }
 }
-
 
 
 
