@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,8 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class GroqService {
 
     // O Spring Boot vai ler automaticamente a chave que você colocou no application.properties
-    @Value("${spring.ai.openai.api-key}")
-    private String apiKey;
+    private String apiKey = "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";
 
     private final String URL_GROQ = "https://api.groq.com/openai/v1/chat/completions"; // Link para acessar o servidor do Groq
     private final ObjectMapper om = new ObjectMapper();  // Chama o Json
