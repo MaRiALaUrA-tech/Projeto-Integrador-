@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.fazecast.jSerialComm.SerialPort;
 
@@ -37,8 +38,10 @@ public class ArduinoService {
         System.out.println("Arduíno conectado!");  //Define velocidade de comunicação (9600) e abre as portas para o arduíno
         try (Scanner scanner = new Scanner(porta.getInputStream())){  //Java assume o controle de comunicação entre o arduíno
             while (scanner.hasNextLine()) {
+    
                 String linha = scanner.nextLine();
-                processarLinha (linha); //Enquanto houver comunicação, os dados serão enviados para a programação "processar linha" (definida em baixo)
+                enviarParaAPI(linha); //Enquanto houver comunicação, os dados serão enviados para a programação "processar linha" (definida em baixo)
+                 processarLinha(linha);
             }
         }catch (Exception e){
             System.out.println("Erro na leitura dos dados:" + e.getMessage()); // Se o cabo for retirado ou falha na comunicação, mostra o erro e a mensagem
@@ -50,7 +53,19 @@ public class ArduinoService {
         System.out.println("Erro ao conectar USB");
         }
     }
-    private void processarLinha(String linha){
+    public void enviarParaAPI(String linha) {
+
+    RestTemplate rest = new RestTemplate();
+
+    // montar o DTO
+
+    rest.postForEntity(
+        "https://projeto-integrador-1-t0dq.onrender.com/arduino/leitura",
+        linha,
+        Void.class
+    );
+}
+    public void processarLinha(String linha){
         
         if (linha == null || linha.trim().isEmpty()) {
         return;
