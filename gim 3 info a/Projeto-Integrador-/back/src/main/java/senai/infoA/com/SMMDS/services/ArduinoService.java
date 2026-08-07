@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fazecast.jSerialComm.SerialPort;
 
 import senai.infoA.com.SMMDS.models.Leitura;
+import senai.infoA.com.SMMDS.models.LeituraDTO;
 import senai.infoA.com.SMMDS.models.Sensor;
 import senai.infoA.com.SMMDS.models.Recomendacao;
 import senai.infoA.com.SMMDS.repositories.LeituraRepository;
@@ -55,15 +56,41 @@ public class ArduinoService {
     }
     public void enviarParaAPI(String linha) {
 
+     if (linha == null || linha.trim().isEmpty()) {
+        return;
+    }
+
     RestTemplate rest = new RestTemplate();
 
-    // montar o DTO
+    String[] partes = linha.split(";");
 
-    rest.postForEntity(
-        "https://projeto-integrador-1-t0dq.onrender.com/arduino/leitura",
-        linha,
-        Void.class
-    );
+    for (String parte : partes) {
+
+        if (!parte.contains(":")) {
+            continue;
+        }
+
+        String[] chaveValor = parte.split(":");
+
+        if (chaveValor.length < 2) {
+            continue;
+        }
+
+        LeituraDTO dto = new LeituraDTO();
+
+        dto.setTipoSensor(chaveValor[0].trim());
+
+        String valor = chaveValor[1]
+        .replaceAll("[^0-9.]", "");
+
+        dto.setValor(new BigDecimal(valor));
+
+        rest.postForEntity(
+            "https://projeto-integrador-1-t0dq.onrender.com/arduino/leitura",
+            dto,
+            String.class
+        );
+    }
 }
     public void processarLinha(String linha){
         
