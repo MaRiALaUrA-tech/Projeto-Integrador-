@@ -33,7 +33,7 @@ public class ArduinoService {
     }
 
     public void iniciarLeitura(){
-        SerialPort porta= SerialPort.getCommPort("COM4");
+        SerialPort porta= SerialPort.getCommPort("/dev/ttyUSB0");
         porta.setBaudRate(9600);
     if (porta.openPort()){
         System.out.println("Arduíno conectado!");  //Define velocidade de comunicação (9600) e abre as portas para o arduíno
