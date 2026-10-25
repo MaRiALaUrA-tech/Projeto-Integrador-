@@ -44,7 +44,7 @@ public class GroqService {
 
             // Montando o formato da mensagem
             Map<String, Object> payload = Map.of(        // Formato que o Groq usa. É um mapa.
-                "model", "llama-3.3-70b-versatile", "messages", List.of(
+                "model", "llama-3.1-8b-instant", "messages", List.of(
                     Map.of("role","system","content", instrucaoIA),
                     Map.of("role","user","content", perguntaUsuario)
                 )
