@@ -168,13 +168,13 @@ public class ArduinoService {
         if(tipoSensor.equals("UMID_SOLO")){
         // Substitui: if (valor > 70)
         if(dado.compareTo(new BigDecimal("70")) > 0){
-            return "Alto";
+            return "Baixo";
         }
         // Substitui: else if (valor > 40)
         else if(dado.compareTo(new BigDecimal("40")) > 0){
             return "Moderado";
         }
-        return "Baixo";
+        return "Alto";
     }
     return "Sem risco";
 }
