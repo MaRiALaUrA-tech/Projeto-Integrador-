@@ -42,13 +42,15 @@ public class GroqService {
             // Montamos a pergunta com os dados reais do seu Arduino
             String perguntaUsuario = "O sensor " + tipoSensor + " marcou o valor " + dado + " no tipo de solo " + tipoSolo + ". O que o agricultor deve fazer?";
 
+            String urlLimpa = URL_GROQ.trim(); //Sem espaços bobos
             // Montando o formato da mensagem
             Map<String, Object> payload = Map.of(        // Formato que o Groq usa. É um mapa.
-                "model", "llama-3.1-8b-instant", "messages", List.of(
+                "model", "llama-3.3-70b-versatile", "messages", List.of(
                     Map.of("role","system","content", instrucaoIA),
                     Map.of("role","user","content", perguntaUsuario)
                 )
             );
+            
             String corpoJson = om.writeValueAsString(payload); // Transforma o mapa em texto Json
 
             //  Preparamos a viagem dos dados colocando a sua chave de segurança (chave de API) no header
