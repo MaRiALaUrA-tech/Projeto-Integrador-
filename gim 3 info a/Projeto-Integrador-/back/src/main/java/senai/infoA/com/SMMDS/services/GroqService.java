@@ -45,7 +45,7 @@ public class GroqService {
             String urlLimpa = URL_GROQ.trim(); //Sem espaços bobos
             // Montando o formato da mensagem
             Map<String, Object> payload = Map.of(        // Formato que o Groq usa. É um mapa.
-                "model", "llama-3.3-70b-versatile", "messages", List.of(
+                "model", "qwen/qwen3.8-27b", "messages", List.of(
                     Map.of("role","system","content", instrucaoIA),
                     Map.of("role","user","content", perguntaUsuario)
                 )
