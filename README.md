@@ -32,6 +32,8 @@ O sistema busca fornecer informações relevantes sobre as condições do solo, 
   - Link Swagger:
    [https://projeto-integrador-1-t0dq.onrender.com/aula/swagger-ui/index.html#/](https://projeto-integrador-1-t0dq.onrender.com/aula/swagger-ui/index.html#/)
 
+  - Link trabalho:
+    [https://projetointegrador-8s2hvr.flutterflow.app/](https://projetointegrador-8s2hvr.flutterflow.app/)
 
     
 
