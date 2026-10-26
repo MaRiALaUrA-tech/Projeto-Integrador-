@@ -3,6 +3,7 @@ package senai.infoA.com.SMMDS.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import senai.infoA.com.SMMDS.services.LeituraService;
 
 @RestController
 @RequestMapping("/leitura")
+@CrossOrigin(origins = "*")
 public class LeituraControler {
 
 
